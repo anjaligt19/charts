@@ -1,0 +1,41 @@
+<div class="container container-border">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4" *ngIf=barChartData>
+          <canvas baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [colors]="barChartColors"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+        <div class="col-sm-4" *ngIf=salesLineCData>
+          <canvas baseChart
+            [datasets]="salesLineCData"
+            [labels]="salesLineLabel"
+            [options]="lineChartOptions"
+            [colors]="lineChartColors"
+            [legend]="lineChartLegend"
+            [chartType]="lineChartType"
+            [plugins]="lineChartPlugins">
+          </canvas>
+        </div>
+        <div class="col-sm-4" *ngIf=ordersLineCData>
+          <canvas baseChart
+            [datasets]="ordersLineCData"
+            [labels]="ordersLineLabel"
+            [options]="orderChartOptions"
+            [colors]="ordersChartColors"
+            [legend]="lineChartLegend"
+            [chartType]="lineChartType"
+            [plugins]="lineChartPlugins">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
