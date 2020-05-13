@@ -13,6 +13,9 @@
           </canvas>
         </div>
         <div class="col-sm-4" *ngIf=salesLineCData>
+          <div class="custom-sales-per" [ngClass]="{'text-success' : salesPercentage> 0,'text-danger': salesPercentage < 0, 'muted-variation': salesPercentage===0 }">
+          {{salesPercentage}} %
+          </div>
           <canvas baseChart
             [datasets]="salesLineCData"
             [labels]="salesLineLabel"
@@ -24,6 +27,9 @@
           </canvas>
         </div>
         <div class="col-sm-4" *ngIf=ordersLineCData>
+          <div class="custom-sales-per" [ngClass]="{'text-success' : orderPercentage> 0,'text-danger': orderPercentage < 0, 'muted-variation': orderPercentage===0 }">
+          {{orderPercentage}} %
+          </div>
           <canvas baseChart
             [datasets]="ordersLineCData"
             [labels]="ordersLineLabel"

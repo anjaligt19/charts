@@ -15,7 +15,8 @@ export class AppComponent implements OnInit {
   
   barChartLabels= [];
   bData = <any>[];
-  
+  salesPercentage;
+  orderPercentage;
   constructor(private chartService: ChartService) { }
   
   public barChartOptions = {
@@ -29,14 +30,19 @@ export class AppComponent implements OnInit {
           {
               ticks: {
                 fontSize: 8
-              }
+              },
+              gridLines: {
+                drawOnChartArea: false
+            }
           }
       ],
       yAxes: [{
        ticks: {
           beginAtZero: true,
-          
-        }
+        },
+        gridLines: {
+                drawOnChartArea: false
+            }
       }]
     }
   };
@@ -61,19 +67,19 @@ export class AppComponent implements OnInit {
 	    ]
 	},
 	title: {
-            display: true,
-            text: ['Custom Chart Title one', 'Custom Chart Title two'],
-            fontWeight: "bolder",
-        fontColor: "#008B8B",
+        display: true,
+        text: ['Custom Chart Title one', 'Custom Chart Title two'],
+        fontWeight: "bolder",
+        fontColor: "#000",
         fontFamily: "tahoma",        
-        fontSize: 12,
+        fontSize: 22,
         padding: 10 
-        },
-        plugins: {
-            filler: {
-                propagate: true
-            }
-        }
+    },
+  plugins: {
+      filler: {
+          propagate: true
+      }
+  }
   };
 
   public orderChartOptions = {
@@ -100,10 +106,9 @@ export class AppComponent implements OnInit {
             display: true,
             text: ['Custom Chart Title one', 'Custom Chart Title two'],
             fontWeight: "bolder",
-        fontColor: "#008B8B",
+        fontColor: "#000",
         fontFamily: "tahoma",        
-        
-        fontSize: 12,
+        fontSize: 22,
         padding: 10 
         },
         plugins: {
@@ -179,7 +184,8 @@ export class AppComponent implements OnInit {
         this.salesLineLabel = salesData.map(a => a.date);
         this.lineChartOptions.title.display = true;
         this.lineChartOptions.title.text[0] = saleRes.data.totalPastSales;
-        this.lineChartOptions.title.text[1] = saleRes.data.salesPercentage+" decrease sales amount";
+        this.salesPercentage = saleRes.data.salesPercentage;
+        this.lineChartOptions.title.text[1] = "";
         this.salesLineCData = [
                 { data: salesData.map(a => a.daily_total), label: 'salesAmt' }
               ];
@@ -194,7 +200,8 @@ export class AppComponent implements OnInit {
         this.ordersLineLabel = ordersData.map(a => a.date);
         this.orderChartOptions.title.display = true;
         this.orderChartOptions.title.text[0] = ordersRes.data.totalPastOrders;
-        this.orderChartOptions.title.text[1] =ordersRes.data.ordersPercentage+" decrease orders amount";
+        this.orderChartOptions.title.text[1] = "";
+        this.orderPercentage = ordersRes.data.ordersPercentage;
         this.ordersLineCData = [
                 { data: ordersData.map(a => a.num_orders), label: 'ordersCount' }
               ];
