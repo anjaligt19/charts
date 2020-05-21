@@ -26,6 +26,12 @@ module.exports = function(app) {
   *  variation in the number of orders per day
   */
   app.get('/api/getOrdersVariation', charts.getOrdersVariation);
+
+  /**
+  * @Definition : This routes used to get
+  *  search query result
+  */
+  app.get('/api/search', charts.search);
  
     
 }

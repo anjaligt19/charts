@@ -14,6 +14,67 @@ exports.getCharts = (req, res) => {
 	});
 }
 
+
+/**
+ * @get 
+ * This method is used to search 
+ * records on the basis of some query
+ */
+exports.search = (req, res) => {
+	var search_keyword = req.query.keyword;
+	const search_keyword_with_comma = search_keyword.replace(/ /g, ",");
+	var string = req.query.keyword.split(" ");
+	
+	
+	sequelize.query("SELECT ProductID, name, Description, Price, Tags, Subtags FROM `products_new` WHERE `Name` LIKE '%" + search_keyword +  "%' or `Tags` LIKE '%"+ search_keyword_with_comma + "%' or Subtags LIKE '%"+ search_keyword_with_comma + "%'").then(function(data){
+		if(data[0].length==0)
+		{
+			sequelize.query("SELECT ProductID, name, Description, Price, Tags, Subtags FROM `products_new` WHERE `Name` LIKE ('%"+string[0]+"%') or `Name` LIKE ('%"+string[1]+"%') or `Name` LIKE ('%"+string[2]+"%') or `Tags` LIKE ('%"+string[0]+"%') or `Tags` LIKE ('%"+string[1]+"%') or `Tags` LIKE ('%"+string[2]+"%') or `Subtags` LIKE ('%"+string[0]+"%') or `Subtags` LIKE ('%"+string[1]+"%') or `Subtags` LIKE ('%"+string[2]+"%')").then(function(indivRes){
+				if(indivRes[0].length==0)
+				{
+					var last_word = string[string.length - 1];
+					string[string.length - 1] = last_word.replace(/(?:es|s)/g,'');
+					var new_search_keyword = string.join();
+
+					new_search_keyword_n = new_search_keyword.replace(/,/g, " ");
+					
+					sequelize.query("SELECT ProductID, name, Description, Price, Tags, Subtags FROM `products_new` WHERE `Name` LIKE '%" + new_search_keyword_n +  "%' or `Tags` LIKE '%"+ new_search_keyword + "%' or Subtags LIKE '%"+ new_search_keyword + "%'").then(function(singRes){
+						//console.log(singRes, 'aaaaaaa');
+						if(singRes[0].length==0)
+						{
+							res.json({status:true,result_code:2000
+					        ,message:"No record found"
+					        ,data:indivRes[0]});
+
+						}else{
+							//console.log(singRes[0], '3');
+							res.json({status:true,result_code:2000
+					        ,message:"Record fetched successfully"
+					        ,data:singRes[0]});
+						}
+					});
+
+				}else{
+				//console.log(indivRes[0], '2');
+					res.json({status:true,result_code:2000
+			        ,message:"Record fetched successfully"
+			        ,data:indivRes[0]});
+				}
+			})
+
+
+		}else{
+			console.log(data[0].length, '1');
+			res.json({status:true,result_code:2000
+	        ,message:"Record fetched successfully"
+	        ,data:data[0]});
+		}
+		
+	}).catch((err) => {
+      res.status(500).send({ error: "Unable to fetch data" });
+    });
+}
+
 /**
  * @get 
  * This method is used to get sales variations
